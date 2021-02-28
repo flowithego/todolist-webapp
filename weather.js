@@ -36,10 +36,10 @@ function init() {
             const sensory = data.main.feels_like;
 
             // Set DOM Elements from the API
-            tempDegree.textContent = Math.round(temperature);
+            tempDegree.textContent = `${Math.round(temperature)}°C`;
             tempDescription.textContent = summary;
-            sensoryTemp.textContent = `(Feels like ${Math.round(sensory)}°C)`;
-            locationTimezone.textContent = `@${city}`;
+            sensoryTemp.textContent = `(feels like ${Math.round(sensory)}°C)`;
+            locationTimezone.textContent = `@ ${city}`;
 
             // Icon
             let icon = data.weather[0].icon;
@@ -54,15 +54,15 @@ function init() {
               if (tempUnit.textContent === "°C") {
                 tempUnit.textContent = "°F";
                 tempDegree.textContent = Math.round(farenheit);
-                sensoryTemp.textContent = `Feels like ${Math.round(
+                sensoryTemp.textContent = `(feels like ${Math.round(
                   sensoryFarenheit
-                )} °F`;
+                )}°F)`;
               } else {
                 tempUnit.textContent = "°C";
                 tempDegree.textContent = Math.round(temperature);
-                sensoryTemp.textContent = `Feels like ${Math.round(
+                sensoryTemp.textContent = `(feels like ${Math.round(
                   sensory
-                )} °C`;
+                )}°C)`;
               }
             });
           });
