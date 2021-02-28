@@ -1,56 +1,74 @@
-const weather = document.querySelector(".js-weather");
-
-const API_KEY = "7684e69beaeac2fc8be04ccf56b61401";
-const COORDS = "coords";
-
-function getWeather(lat, lon) {
-    fetch(
-        `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
-    ).then(function(response) {
-        return response.json();
-    }).then(function(json) {
-        const temperature = json.main.temp;
-        const place = json.name;
-        weather.innerText = `${temperature}°C  @${place}`;
-        weather.style.color = "#fff";
-    });
-}
-
-function saveCoords(coordsObj) {
-    localStorage.setItem(COORDS, JSON.stringify(coordsObj));
-}
-
-function handleGeoSuccess(position) {
-    const latitude = position.coords.latitude;
-    const longitude = position.coords.longitude;
-    const coordsObj = {
-        latitude,
-        longitude
-    };
-    saveCoords(coordsObj);
-    getWeather(latitude, longitude);
-}
-
-function handleGeoError() {
-    console.log("Can't access geo location")
-}
-
-function askForCoords() {
-    navigator.geolocation.getCurrentPosition(handleGeoSuccess, handleGeoError);
-}
-
-function loadCoords() {
-    const loadedCoords = localStorage.getItem(COORDS);
-    if (loadedCoords === null) {
-        askForCoords();
-    } else {
-        const parsedCoords = JSON.parse(loadedCoords);
-        getWeather(parsedCoords.latitude, parsedCoords.longitude);
-    }    
-}
+let tempDescription = document.querySelector(
+  ".location__weather-icon-description"
+);
+let temperatureSection = document.querySelector(".temperature__official");
+let tempDegree = document.querySelector(".temperature__degree");
+let tempUnit = document.querySelector(".temperature__unit");
+let sensoryTemp = document.querySelector(".temperature__sensory");
+let locationTimezone = document.querySelector(".location__timezone");
+let weatherIcon = document.querySelector(".location__weather-icon");
 
 function init() {
-    loadCoords();
+  window.addEventListener("load", () => {
+    let long; // longitude
+    let lat; // latitude
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        long = position.coords.longitude;
+        lat = position.coords.latitude;
+
+        const API = "7684e69beaeac2fc8be04ccf56b61401";
+        const URL = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${long}&appid=${API}&units=metric`;
+
+        console.log(URL); /*          */
+
+        fetch(URL) // resolve, reject
+          .then((resp) => {
+            return resp.json();
+          })
+          .then((data) => {
+            console.log(data); /*          */
+            const { temp: temperature } = data.main; // const temp = data.main.temp;
+            const summary = data.weather[0].description;
+            const city = data.name;
+            const country = data.sys.country;
+            const sensory = data.main.feels_like;
+
+            // Set DOM Elements from the API
+            tempDegree.textContent = Math.round(temperature);
+            tempDescription.textContent = summary;
+            sensoryTemp.textContent = `(Feels like ${Math.round(sensory)}°C)`;
+            locationTimezone.textContent = `@${city}`;
+
+            // Icon
+            let icon = data.weather[0].icon;
+            weatherIcon.src = `http://openweathermap.org/img/wn/${icon}.png`;
+
+            // celsius to farenheit conversion
+            let farenheit = (temperature * 9) / 5 + 32;
+            let sensoryFarenheit = (sensory * 9) / 5 + 32;
+
+            // Change temperature SI unit
+            temperatureSection.addEventListener("click", () => {
+              if (tempUnit.textContent === "°C") {
+                tempUnit.textContent = "°F";
+                tempDegree.textContent = Math.round(farenheit);
+                sensoryTemp.textContent = `Feels like ${Math.round(
+                  sensoryFarenheit
+                )} °F`;
+              } else {
+                tempUnit.textContent = "°C";
+                tempDegree.textContent = Math.round(temperature);
+                sensoryTemp.textContent = `Feels like ${Math.round(
+                  sensory
+                )} °C`;
+              }
+            });
+          });
+      });
+    }
+  });
 }
 
-init();
+window.addEventListener("DOMContentLoaded", init);

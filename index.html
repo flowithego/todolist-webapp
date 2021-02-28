@@ -1,43 +1,65 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Webapp</title>
-		<link rel="stylesheet" href="style.css" />
-		<script defer src="clock.js"></script>
-		<script defer src="greeting.js"></script>
-		<!-- <script defer src="todo.js"></script> -->
-		<script defer src="my-todo.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Webapp</title>
+    <link rel="stylesheet" href="style.css" />
+    <script defer src="clock.js"></script>
+    <script defer src="greeting.js"></script>
+    <!-- <script defer src="todo.js"></script> -->
+    <script defer src="my-todo.js"></script>
     <script defer src="background.js"></script>
     <script defer src="weather.js"></script>
-		<link
-			rel="stylesheet"
-			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
-		/>
-	</head>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"
+    />
+  </head>
 
-	<body>
-		<div class="js-clock">
-			<h1></h1>
-		</div>
+  <body>
+    <!-- CLOCK -->
+    <div class="js-clock">
+      <h1></h1>
+    </div>
 
-		<form class="js-form form">
-			<input type="text" placeholder="What is your name?" autocomplete="off" />
-		</form>
-		<h4 class="js-greetings greetings"></h4>
+    <!-- INPUT NAME & GREETING -->
+    <form class="js-form form">
+      <input type="text" placeholder="What is your name?" autocomplete="off" />
+    </form>
+    <h4 class="js-greetings greetings"></h4>
 
-		<form class="js-todoForm">
-			<input
-				class="todoInput"
-				type="text"
-				placeholder="Enter your todo..."
-				autocomplete="off"
-			/>
-		</form>
-		<ul class="js-todoList"></ul>
+    <!-- TODO LIST -->
+    <form class="js-todoForm">
+      <input
+        class="todoInput"
+        type="text"
+        placeholder="Enter your todo..."
+        autocomplete="off"
+      />
+    </form>
+    <ul class="js-todoList"></ul>
 
-    <span class="js-weather"></span>
-	</body>
+    <!-- WEATHER -->
+    <div class="weather-container">
+      <div class="location">
+        <h1 class="location__timezone">Timezone</h1>
+        <div class="temperature">
+          <div class="temperature__official">
+            <h2 class="temperature__degree"></h2>
+            <span class="temperature__unit">°C</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="location__weather">
+        <img class="location__weather-icon" />
+        <div class="wrapper">
+					<div class="location__weather-icon-description"></div>
+          <small class="temperature__sensory"></small>
+        </div>
+      </div>
+    </div>
+  </body>
 </html>
